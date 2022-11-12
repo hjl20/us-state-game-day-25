@@ -20,19 +20,22 @@ def show_state(answer):
 
 
 def us_states_game():
-    in_game = True
     num_correct = 0
+    all_states = data.state.to_list()
     guessed_states = []
 
-    while in_game:
+    while len(guessed_states) < len(data):
         answer = screen.textinput(title=f"{num_correct}/50 states correct", prompt="Guess the name of a state").title()
-        if answer in data.state.values and answer not in guessed_states:
+        if answer == "Exit":
+            for state in guessed_states:
+                all_states.remove(state)
+            break
+        elif answer in all_states and answer not in guessed_states:
             guessed_states.append(answer)
-            num_correct += 1
             show_state(answer)
-        if num_correct == len(data):
-            in_game = False
 
+    df = pandas.DataFrame(all_states)
+    df.to_csv("states_to_learn.csv")
     screen.exitonclick()
 
 
