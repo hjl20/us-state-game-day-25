@@ -26,16 +26,16 @@ def us_states_game():
 
     while len(guessed_states) < len(data):
         answer = screen.textinput(title=f"{num_correct}/50 states correct", prompt="Guess the name of a state").title()
+
         if answer == "Exit":
-            for state in guessed_states:
-                all_states.remove(state)
+            missing_states = [state for state in all_states if state not in guessed_states]
+            df = pandas.DataFrame(missing_states)
+            df.to_csv("states_to_learn.csv")
             break
         elif answer in all_states and answer not in guessed_states:
             guessed_states.append(answer)
             show_state(answer)
 
-    df = pandas.DataFrame(all_states)
-    df.to_csv("states_to_learn.csv")
     screen.exitonclick()
 
 
